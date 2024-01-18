@@ -9,102 +9,105 @@
 import * as THREE from 'three'
 import { useWindowResize } from '@/use/useWindowResize'
 
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
+import { cubeMash } from '@/three/objects/cube'
+import gsap from 'gsap'
+import GUI from 'lil-gui'
+import { useMouse } from '@vueuse/core'
+import { useDoubleClick } from '@/use/useDoubleClick'
+import { triangleMash } from '@/three/objects/triangle'
+let controls: OrbitControls
+
+let renderer: THREE.WebGLRenderer
+let canvas: HTMLCanvasElement
+
+const gui = new GUI()
+
+function updateRenderer () {
+  renderer.setSize(width.value, height.value)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+}
 
 const { width, height } = useWindowResize(() => {
-  renderer.setSize(width.value, height.value)
+  updateRenderer()
   camera.aspect = width.value / height.value
   camera.updateProjectionMatrix()
 })
 
-let renderer: THREE.WebGLRenderer
+useDoubleClick(() => {
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen()
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    }
+  }
+  console.log('double click')
+})
+
+const { x, y } = useMouse()
 
 const scene = new THREE.Scene()
 
+const cursorX = computed(() => x.value / width.value - 0.5)
+const cursorY = computed(() => -(y.value / height.value - 0.5))
+
 // Object
-const geometry = new THREE.BoxGeometry(100, 100, 100)
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-const mash = new THREE.Mesh(geometry, material)
 
-const group = new THREE.Group()
-group.rotation.set(3, 0, 0)
+const cube = cubeMash()
+console.log((Math.random() - 0.5) * 2000)
+cube.position.set(0, 0, 0)
 
-mash.position.set(0.7, -0.6, 1)
+gui.add(cube.position, 'x').min(-3).max(3).step(0.01)
+gui.add(cube.position, 'y').min(-3).max(3).step(0.01)
+scene.add(cube)
 
-// scene.add(mash)
+const camera = new THREE.PerspectiveCamera(75, width.value / height.value, 1, 1000)
+camera.position.z = 5
 
-const camera = new THREE.PerspectiveCamera(75, width.value / height.value, 1, 99999)
-camera.position.z = 1200
+const pointLight = new THREE.PointLight(0xffffff, 500)
+pointLight.position.set(10, 10, 10)
 
-const loader = new SVGLoader()
+scene.add(pointLight)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 
-let time = Date.now()
+scene.add(ambientLight)
 
+const lightHelper = new THREE.PointLightHelper(pointLight, 5)
+scene.add(lightHelper)
+
+// const clock = new THREE.Clock()
 function render () {
-  const currentTime = Date.now()
+  // const elapsedTime = clock.getElapsedTime()
 
-  const deltaTime = currentTime - time
+  // Update objects
+  // camera.position.x = Math.sin(cursorX.value * Math.PI * 2) * 5
+  // camera.position.z = Math.cos(cursorX.value * Math.PI * 2) * 5
+  // camera.position.y = cursorY.value * 10
+  // camera.lookAt(cube.position)
+  controls.update()
 
-  time = currentTime
-
-  mash.rotation.x += 0.001 * deltaTime
-  mash.rotation.y += 0.001 * deltaTime
-  group.rotation.y += 0.001 * deltaTime
   renderer.render(scene, camera)
   window.requestAnimationFrame(render)
 }
 
-onMounted(() => {
-  const canvas = document.querySelector('canvas.webgl') as HTMLCanvasElement
+onMounted(async () => {
+  canvas = document.querySelector('canvas.webgl') as HTMLCanvasElement
 
   renderer = new THREE.WebGLRenderer({
     canvas
   })
 
-  renderer.setSize(width.value, height.value)
+  updateRenderer()
 
-  const controls = new OrbitControls(camera, canvas)
+  controls = new OrbitControls(camera, canvas)
   controls.enableDamping = true
   // controls.enabled = false
 
   // load a SVG resource
-  loader.load(
-    // resource URL
-    'le.svg',
-    // called when the resource is loaded
-    function (data) {
-      const paths = data.paths
 
-      for (let i = 0; i < paths.length; i++) {
-        const path = paths[i]
-
-        const material = new THREE.MeshBasicMaterial({
-          color: path.color,
-          side: THREE.DoubleSide,
-          depthWrite: false
-        })
-
-        const shapes = SVGLoader.createShapes(path)
-
-        for (let j = 0; j < shapes.length; j++) {
-          const shape = shapes[j]
-          console.log(shape)
-          const geometry = new THREE.ExtrudeGeometry(shape, { depth: 50, bevelEnabled: false })
-          console.log(geometry)
-          const shapeMash = new THREE.Mesh(geometry, material)
-          group.add(shapeMash)
-        }
-      }
-
-      scene.add(group)
-
-      scene.add(mash)
-
-      render()
-    }
-  )
+  render()
 })
 </script>
 <style>
