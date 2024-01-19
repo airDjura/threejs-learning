@@ -3,8 +3,29 @@ import * as THREE from 'three'
 import { onMounted } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { useDoubleClick } from '@/use/useDoubleClick'
+import { ColorRepresentation } from 'three/src/math/Color'
 
-export function useRenderer (elementSelector: string) {
+interface RendererOptions {
+  elementSelector?: string,
+  ambientLight?: {
+    enabled?: boolean,
+    color?: ColorRepresentation,
+    intensity?: number
+  } | null
+}
+
+const defaultOptions: Required<RendererOptions> = {
+  elementSelector: 'canvas',
+  ambientLight: {
+    enabled: true,
+    color: 0xffffff,
+    intensity: 0.5
+  }
+}
+
+export function useRenderer (options?: RendererOptions) {
+  const optionsWithDefaults = Object.assign({}, defaultOptions, options)
+
   const { width, height } = useWindowResize(() => {
     updateRenderer()
     camera.aspect = width.value / height.value
@@ -27,6 +48,11 @@ export function useRenderer (elementSelector: string) {
   let controls: OrbitControls
   const scene = new THREE.Scene()
 
+  if (optionsWithDefaults.ambientLight) {
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+    scene.add(ambientLight)
+  }
+
   function updateRenderer () {
     renderer.setSize(width.value, height.value)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -42,7 +68,7 @@ export function useRenderer (elementSelector: string) {
   }
 
   onMounted(async () => {
-    canvas = document.querySelector(elementSelector) as HTMLCanvasElement
+    canvas = document.querySelector(optionsWithDefaults.elementSelector) as HTMLCanvasElement
 
     renderer = new THREE.WebGLRenderer({
       canvas

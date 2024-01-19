@@ -9,24 +9,13 @@ import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { cubeMash } from '@/three/objects/cube'
 
-const { scene, camera } = useRenderer('.webgl')
+const { scene, camera } = useRenderer()
 
 camera.position.z = 5
 
 const { cube } = cubeMash()
 
 scene.add(cube)
-
-const pointLight = new THREE.PointLight(0xffffff, 500)
-pointLight.position.set(10, 10, 10)
-
-scene.add(pointLight)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-
-scene.add(ambientLight)
-
-const lightHelper = new THREE.PointLightHelper(pointLight, 5)
-scene.add(lightHelper)
 </script>
 <style>
 * {

@@ -9,7 +9,7 @@ import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { cubeMash } from '@/three/objects/cube'
 
-const { scene, camera } = useRenderer('.webgl')
+const { scene, camera } = useRenderer()
 
 camera.position.z = 5
 
