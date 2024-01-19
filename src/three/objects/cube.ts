@@ -1,8 +1,8 @@
 import * as THREE from 'three'
+const textureLoader = new THREE.TextureLoader()
 
 export function cubeMash () {
-  const image = new Image()
-  const texture = new THREE.Texture(image)
+  const texture = textureLoader.load('/textures/000.jpg')
   texture.colorSpace = THREE.SRGBColorSpace
   const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4)
   const material = new THREE.MeshStandardMaterial({ map: texture })
@@ -11,7 +11,6 @@ export function cubeMash () {
 
   return {
     cube,
-    image,
     texture
   }
 }

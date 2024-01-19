@@ -52,7 +52,7 @@ const cursorY = computed(() => -(y.value / height.value - 0.5))
 
 // Object
 
-const { cube, image, texture } = cubeMash()
+const { cube } = cubeMash()
 
 cube.position.set(0, 0, 0)
 
@@ -83,12 +83,6 @@ function render () {
 }
 
 onMounted(async () => {
-  image.onload = () => {
-    texture.needsUpdate = true
-  }
-
-  image.src = '/textures/000.jpg'
-
   canvas = document.querySelector('canvas.webgl') as HTMLCanvasElement
 
   renderer = new THREE.WebGLRenderer({
