@@ -1,4 +1,5 @@
 <template>
+  <router-link to="/" class="fixed top-0 right-0 z-10 bg-gray-300 p-1 rounded-bl">Back</router-link>
   <router-view/>
 </template>
 
