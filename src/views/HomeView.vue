@@ -13,7 +13,6 @@ import { computed, onMounted } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { cubeMash } from '@/three/objects/cube'
 import gsap from 'gsap'
-import GUI from 'lil-gui'
 import { useMouse } from '@vueuse/core'
 import { useDoubleClick } from '@/use/useDoubleClick'
 import { triangleMash } from '@/three/objects/triangle'
@@ -21,8 +20,6 @@ let controls: OrbitControls
 
 let renderer: THREE.WebGLRenderer
 let canvas: HTMLCanvasElement
-
-const gui = new GUI()
 
 function updateRenderer () {
   renderer.setSize(width.value, height.value)
@@ -55,12 +52,10 @@ const cursorY = computed(() => -(y.value / height.value - 0.5))
 
 // Object
 
-const cube = cubeMash()
-console.log((Math.random() - 0.5) * 2000)
+const { cube, image, texture } = cubeMash()
+
 cube.position.set(0, 0, 0)
 
-gui.add(cube.position, 'x').min(-3).max(3).step(0.01)
-gui.add(cube.position, 'y').min(-3).max(3).step(0.01)
 scene.add(cube)
 
 const camera = new THREE.PerspectiveCamera(75, width.value / height.value, 1, 1000)
@@ -81,11 +76,6 @@ scene.add(lightHelper)
 function render () {
   // const elapsedTime = clock.getElapsedTime()
 
-  // Update objects
-  // camera.position.x = Math.sin(cursorX.value * Math.PI * 2) * 5
-  // camera.position.z = Math.cos(cursorX.value * Math.PI * 2) * 5
-  // camera.position.y = cursorY.value * 10
-  // camera.lookAt(cube.position)
   controls.update()
 
   renderer.render(scene, camera)
@@ -93,6 +83,12 @@ function render () {
 }
 
 onMounted(async () => {
+  image.onload = () => {
+    texture.needsUpdate = true
+  }
+
+  image.src = '/textures/000.jpg'
+
   canvas = document.querySelector('canvas.webgl') as HTMLCanvasElement
 
   renderer = new THREE.WebGLRenderer({
