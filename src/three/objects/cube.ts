@@ -18,7 +18,7 @@ export function cubeMash () {
 
   const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4)
   // const geometry = new THREE.SphereGeometry(1, 32, 32)
-  const material = new THREE.MeshStandardMaterial({ map: colorTexture })
+  const material = new THREE.MeshBasicMaterial({ map: colorTexture })
 
   const cube = new THREE.Mesh(geometry, material)
 
