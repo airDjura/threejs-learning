@@ -9,13 +9,14 @@ import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { cubeMash } from '@/three/objects/cube'
 
-const { scene, camera } = useRenderer()
+const { scene, camera, render } = useRenderer()
 
 camera.position.z = 5
 
 const { cube } = cubeMash()
 
 scene.add(cube)
+
 </script>
 <style>
 * {

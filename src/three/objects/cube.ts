@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { textureLoader } from '@/three/loadingManager'
 
 export function cubeMash () {
-  const colorTexture = textureLoader.load('/textures/door/000.jpg')
+  const colorTexture = textureLoader.load('/textures/door/color.jpg')
   // const alphaTexture = textureLoader.load('/textures/001.jpg')
   // const heightTexture = textureLoader.load('/textures/002.png')
   // const normalTexture = textureLoader.load('/textures/003.jpg')

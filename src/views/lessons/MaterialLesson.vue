@@ -7,15 +7,44 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
-import { cubeMash } from '@/three/objects/cube'
 
-const { scene, camera } = useRenderer()
+const { scene, camera, render } = useRenderer({
+  renderCallback: (clock) => {
+    const elapsedTime = clock.getElapsedTime()
+    sphere.rotation.y = elapsedTime
+    torus.rotation.y = elapsedTime
+    plane.rotation.y = elapsedTime
+
+    sphere.rotation.x = -1 * elapsedTime
+    torus.rotation.x = -1 * elapsedTime
+    plane.rotation.x = -1 * elapsedTime
+  }
+})
 
 camera.position.z = 5
 
-const { cube } = cubeMash()
+const material = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
-scene.add(cube)
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 16, 16),
+  material
+)
+
+sphere.position.x = -2
+
+const plane = new THREE.Mesh(
+  new THREE.PlaneGeometry(1, 1),
+  material
+)
+
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+  material
+)
+
+torus.position.x = 2
+
+scene.add(sphere, plane, torus)
 
 </script>
 <style>

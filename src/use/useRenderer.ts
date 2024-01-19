@@ -12,6 +12,7 @@ interface RendererOptions {
     color?: ColorRepresentation,
     intensity?: number
   } | null
+  renderCallback?: (clock: THREE.Clock) => void
 }
 
 const defaultOptions: Required<RendererOptions> = {
@@ -20,7 +21,9 @@ const defaultOptions: Required<RendererOptions> = {
     enabled: true,
     color: 0xffffff,
     intensity: 0.5
-  }
+  },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  renderCallback: () => {}
 }
 
 export function useRenderer (options?: RendererOptions) {
@@ -57,14 +60,15 @@ export function useRenderer (options?: RendererOptions) {
     renderer.setSize(width.value, height.value)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
-
+  const clock = new THREE.Clock()
   function render () {
-    // const elapsedTime = clock.getElapsedTime()
-
     controls.update()
 
+    optionsWithDefaults.renderCallback(clock)
+
     renderer.render(scene, camera)
-    window.requestAnimationFrame(render)
+
+    requestAnimationFrame(render)
   }
 
   onMounted(async () => {
@@ -87,6 +91,7 @@ export function useRenderer (options?: RendererOptions) {
 
   return {
     scene,
-    camera
+    camera,
+    render
   }
 }
