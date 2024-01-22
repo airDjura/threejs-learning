@@ -1,6 +1,6 @@
-import { useTextureLoader } from '@/three/loadingManager'
+import { useLoader } from '@/three/loadingManager'
 
-const { loadTexture } = useTextureLoader()
+const { loadTexture } = useLoader()
 
 export enum TextureType {
   doorColorTexture = '/textures/door/color.jpg',

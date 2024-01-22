@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { textureLoader } from '@/three/loadingManager'
 
 interface CubeProps {
   width?: number,

@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
-import { TextureType, useTextures } from '@/three/textures/textures'
+import { TextureType, useTextures } from '@/three/loaders/textures'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import image from '@/assets/environmentMap/2k.hdr'
 

@@ -8,7 +8,7 @@
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { useCube } from '@/three/objects/cube'
-import { TextureType, useTextures } from '@/three/textures/textures'
+import { TextureType, useTextures } from '@/three/loaders/textures'
 
 const { scene, camera } = useRenderer()
 const { getTexture } = useTextures()
