@@ -7,6 +7,7 @@ import { ColorRepresentation } from 'three/src/math/Color'
 
 interface RendererOptions {
   elementSelector?: string,
+  axesHelper?: number | null,
   ambientLight?: {
     enabled?: boolean,
     color?: ColorRepresentation,
@@ -17,6 +18,7 @@ interface RendererOptions {
 
 const defaultOptions: Required<RendererOptions> = {
   elementSelector: 'canvas',
+  axesHelper: null,
   ambientLight: {
     enabled: true,
     color: 0xffffff,
@@ -54,6 +56,11 @@ export function useRenderer (options?: RendererOptions) {
   if (optionsWithDefaults.ambientLight) {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
     scene.add(ambientLight)
+  }
+
+  if (optionsWithDefaults.axesHelper) {
+    const axesHelper = new THREE.AxesHelper(optionsWithDefaults.axesHelper)
+    scene.add(axesHelper)
   }
 
   function updateRenderer () {

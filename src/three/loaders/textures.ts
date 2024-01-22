@@ -10,7 +10,7 @@ export enum TextureType {
   doorNormalTexture = '/textures/door/normal.jpg',
   doorMetalnessTexture = '/textures/door/metalness.jpg',
   doorRoughnessTexture = '/textures/door/roughness.jpg',
-  matcapTexture = '/textures/matcaps/1.png',
+  matcapTexture = '/textures/matcaps/8.png',
   gradientTexture = '/textures/gradients/3.jpg',
 }
 

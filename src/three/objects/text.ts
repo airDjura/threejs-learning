@@ -7,12 +7,13 @@ export function useText (text: string, options?: TextGeometryParameters) {
     options
   )
 
-  const material = new THREE.MeshStandardMaterial()
+  const material = new THREE.MeshMatcapMaterial()
 
   const mesh = new THREE.Mesh(geometry, material)
 
   return {
     mesh,
-    material
+    material,
+    geometry
   }
 }

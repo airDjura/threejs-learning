@@ -35,6 +35,7 @@ export function useCube (options?: CubeProps) {
 
   return {
     mesh,
-    material
+    material,
+    geometry
   }
 }
