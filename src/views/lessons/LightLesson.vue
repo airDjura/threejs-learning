@@ -8,18 +8,27 @@
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { useCube } from '@/three/objects/cube'
-import { TextureType, useTextures } from '@/three/loaders/textures'
+import { useSphere } from '@/three/objects/sphere'
+import { useTorus } from '@/three/objects/torus'
 
 const { scene, camera } = useRenderer()
-const { getTexture } = useTextures()
-
-const doorColorTexture = getTexture(TextureType.doorColorTexture)
 
 camera.position.z = 5
 
-const { mesh } = useCube()
+const { mesh: meshSphere } = useSphere()
+meshSphere.position.x = 2
 
-scene.add(mesh)
+const { mesh: meshCube } = useCube()
+
+const { mesh: meshTorus } = useTorus()
+
+meshTorus.position.x = 4
+
+scene.add(meshTorus)
+
+scene.add(meshSphere)
+
+scene.add(meshCube)
 
 </script>
 <style>

@@ -5,33 +5,30 @@ interface TorusOptions {
   tube?: number,
   radialSegments?: number,
   tubularSegments?: number,
-  arc?: number | undefined,
-  texture?: THREE.Texture | null
+  arc?: number | undefined
 }
 
 const defaultOptions: Required<TorusOptions> = {
-  radius: 1,
-  tube: 1,
-  radialSegments: 1,
-  tubularSegments: 1,
+  radius: 0.3,
+  tube: 0.2,
+  radialSegments: 20,
+  tubularSegments: 45,
   // @ts-ignore
-  arc: undefined,
-  texture: null
+  arc: undefined
 }
 
 export function useTorus (options?: TorusOptions) {
   const optionsWithDefaults = Object.assign({}, defaultOptions, options)
 
-  console.log(optionsWithDefaults)
+  const geometry = new THREE.TorusGeometry(
+    optionsWithDefaults.radius,
+    optionsWithDefaults.tube,
+    optionsWithDefaults.radialSegments,
+    optionsWithDefaults.tubularSegments,
+    optionsWithDefaults.arc
+  )
 
-  const geometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45)
-
-  const material = new THREE.MeshMatcapMaterial()
-
-  console.log(optionsWithDefaults.texture)
-  if (optionsWithDefaults.texture) {
-    material.map = optionsWithDefaults.texture
-  }
+  const material = new THREE.MeshStandardMaterial()
 
   const mesh = new THREE.Mesh(geometry, material)
 
