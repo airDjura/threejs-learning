@@ -8,26 +8,12 @@
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { cubeMash } from '@/three/objects/cube'
-import { TextureType, useTextures } from '@/three/textures/textures'
 
 const { scene, camera, render } = useRenderer()
-const { getTexture } = useTextures()
-
-const doorColorTexture = getTexture(TextureType.doorColorTexture)
 
 camera.position.z = 5
 
-const { cube, material } = cubeMash()
-
-const colorTexture = doorColorTexture
-
-colorTexture.colorSpace = THREE.SRGBColorSpace
-
-colorTexture.generateMipmaps = false
-colorTexture.minFilter = THREE.NearestFilter
-colorTexture.magFilter = THREE.NearestFilter
-
-material.map = colorTexture
+const { cube } = cubeMash()
 
 scene.add(cube)
 
