@@ -6,18 +6,17 @@
 
 <script setup lang="ts">
 
-import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
 import { useLoader } from '@/three/loadingManager'
 import { useText } from '@/three/objects/text'
 import { TextureType, useTextures } from '@/three/loaders/textures'
-import { useTorus } from '@/three/objects/torus'
+import { Mesh, MeshMatcapMaterial, SRGBColorSpace, TorusGeometry } from 'three'
 
-const { scene, camera, render } = useRenderer({})
+const { scene, camera } = useRenderer({})
 const { getTexture } = useTextures()
 
 const matcapTexture = getTexture(TextureType.matcapTexture)
-matcapTexture.colorSpace = THREE.SRGBColorSpace
+matcapTexture.colorSpace = SRGBColorSpace
 
 const { loadFont } = useLoader()
 
@@ -45,12 +44,12 @@ loadFont('/fonts/helvetiker_regular.typeface.json', (font) => {
   scene.add(textMesh)
 })
 
-const torusGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45)
-const torusMaterial = new THREE.MeshMatcapMaterial()
+const torusGeometry = new TorusGeometry(0.3, 0.2, 20, 45)
+const torusMaterial = new MeshMatcapMaterial()
 torusMaterial.matcap = matcapTexture
 
 for (let i = 0; i < 100; i++) {
-  const torusMesh = new THREE.Mesh(torusGeometry, torusMaterial)
+  const torusMesh = new Mesh(torusGeometry, torusMaterial)
   torusMesh.position.x = (Math.random() - 0.5) * 15
   torusMesh.position.y = (Math.random() - 0.5) * 15
   torusMesh.position.z = (Math.random() - 0.5) * 15
