@@ -7,17 +7,17 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
-import { cubeMash } from '@/three/objects/cube'
+import { useCube } from '@/three/objects/cube'
 import { TextureType, useTextures } from '@/three/textures/textures'
 
-const { scene, camera, render } = useRenderer()
+const { scene, camera } = useRenderer()
 const { getTexture } = useTextures()
 
 const doorColorTexture = getTexture(TextureType.doorColorTexture)
 
 camera.position.z = 5
 
-const { cube, material } = cubeMash()
+const { mesh, material } = useCube()
 
 const colorTexture = doorColorTexture
 
@@ -29,7 +29,7 @@ colorTexture.magFilter = THREE.NearestFilter
 
 material.map = colorTexture
 
-scene.add(cube)
+scene.add(mesh)
 
 </script>
 <style>

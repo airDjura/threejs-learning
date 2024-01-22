@@ -7,15 +7,15 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import { useRenderer } from '@/use/useRenderer'
-import { cubeMash } from '@/three/objects/cube'
+import { useCube } from '@/three/objects/cube'
 
 const { scene, camera, render } = useRenderer()
 
 camera.position.z = 5
 
-const { cube } = cubeMash()
+const { mesh } = useCube()
 
-scene.add(cube)
+scene.add(mesh)
 
 </script>
 <style>

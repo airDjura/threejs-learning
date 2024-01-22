@@ -1,15 +1,41 @@
 import * as THREE from 'three'
 import { textureLoader } from '@/three/loadingManager'
 
-export function cubeMash () {
-  const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4)
-  // const geometry = new THREE.SphereGeometry(1, 32, 32)
+interface CubeProps {
+  width?: number,
+  height?: number,
+  depth?: number,
+  widthSegments?: number,
+  heightSegments?: number,
+  depthSegments?: number,
+}
+
+const defaultOptions: Required<CubeProps> = {
+  width: 1,
+  height: 1,
+  depth: 1,
+  widthSegments: 1,
+  heightSegments: 1,
+  depthSegments: 1
+}
+export function useCube (options?: CubeProps) {
+  const optionsWithDefaults = Object.assign({}, defaultOptions, options)
+
+  const geometry = new THREE.BoxGeometry(
+    optionsWithDefaults.width,
+    optionsWithDefaults.height,
+    optionsWithDefaults.depth,
+    optionsWithDefaults.widthSegments,
+    optionsWithDefaults.heightSegments,
+    optionsWithDefaults.depthSegments
+  )
+
   const material = new THREE.MeshStandardMaterial()
 
-  const cube = new THREE.Mesh(geometry, material)
+  const mesh = new THREE.Mesh(geometry, material)
 
   return {
-    cube,
+    mesh,
     material
   }
 }
